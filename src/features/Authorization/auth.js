@@ -7,7 +7,7 @@ import {
 } from './counterSlice';
 
 
-export default function Counter() {
+export default function Auth() {
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
 

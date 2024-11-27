@@ -1,42 +1,65 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchProductList } from './ProductAPI';
+import { fetchAllProducts, fetchProductByFilter } from './ProductAPI';
 
 const initialState = {
-  value: 0,
-  status: 'idle',
+  products: [],
+  status: 'idle', // 'idle' | 'loading' | 'failed'
 };
 
-export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
-  async (amount) => {
-    const response = await fetchProductList(amount);
-    return response.data;
+export const fetchAllProductsAsync = createAsyncThunk(
+  'product/fetchAllProducts',
+  async () => {
+    const response = await fetchAllProducts();
+    // console.log(response.data)
+    return response.data; // The `data` object from the API
   }
 );
 
-export const counterSlice = createSlice({
-  name: 'counter',
+
+export const fetchAllProductsByFilterAsync = createAsyncThunk(
+  "product/fetchProductByFilter",
+  async ({ filter, sort }) => {
+    console.log("Async Filter:", filter);
+    console.log("Async Sort:", sort);
+
+    const response = await fetchProductByFilter({ filter, sort });
+    return response.data; // The `data` object from the API
+  }
+);
+
+
+export const productSlice = createSlice({
+  name: 'product',
   initialState,
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
+      .addCase(fetchAllProductsAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
+      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.value += action.payload;
+        state.products = action.payload;
+        // console.log(action.payload)
+      })
+      .addCase(fetchAllProductsAsync.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(fetchAllProductsByFilterAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchAllProductsByFilterAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.products = action.payload;
+        // console.log(action.payload)
+      })
+      .addCase(fetchAllProductsByFilterAsync.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });
 
-export const { increment } = counterSlice.actions;
+export const productSelector = (state) => state.product.products;
+export const productStatusSelector = (state) => state.product.status;
 
-export const selectCount = (state) => state.counter.value;
-
-
-export default counterSlice.reducer;
+export default productSlice.reducer;

@@ -24,9 +24,9 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
 
       // Add pagination
       // console.log("pagination", pagination)
-      // for (let key in pagination) {
-      //   queryString += `${key}=${pagination[key]}&`
-      // }
+      for (let key in pagination) {
+        queryString += `${key}=${pagination[key]}&`
+      }
       // console.log("pagination", pagination, queryString)
 
       // console.log("Query String:", `http://localhost:8080/products?${queryString}`);

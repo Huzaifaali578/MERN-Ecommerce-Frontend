@@ -1,30 +1,18 @@
-export function fetchAllProducts() {
+export function fetchProductByFilter({ filter, sort, pagination }) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/products");
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch products: ${response.status} ${response.statusText}`
-        );
-      }
-      const data = await response.json();
-      resolve({ data });
-    } catch (error) {
-      reject(error); // Reject the promise with the error
-    }
-  });
-}
 
-export function fetchProductByFilter({ filter, sort }) {
-  return new Promise(async (resolve, reject) => {
-    try {
+      // filter = {"category": [smartphone, laptop], "brand": [apple, samsung]};
+      // sort = {_sort: "price", _order: "desc"};
+      // pagination = {_page: 1, _limit: 10};
+      // TODO: on server we will support multi value filter
       let queryString = "";
 
       // Add filters
       for (let key in filter) {
         const categoryValues = filter[key];
         if (categoryValues.length) {
-          const lastCategoryValue = categoryValues[categoryValues.length - 1]
+          const lastCategoryValue = categoryValues[categoryValues.length - 1];
           queryString += `${key}=${lastCategoryValue}&`;
         }
       }
@@ -34,24 +22,31 @@ export function fetchProductByFilter({ filter, sort }) {
         queryString += `${key}=${sort[key]}&`;
       }
 
-      console.log("Query String:", queryString);
+      // Add pagination
+      // console.log("pagination", pagination)
+      // for (let key in pagination) {
+      //   queryString += `${key}=${pagination[key]}&`
+      // }
+      // console.log("pagination", pagination, queryString)
 
-      if (queryString) {
-        const response = await fetch(
-          "http://localhost:8080/products?" + queryString
+      // console.log("Query String:", `http://localhost:8080/products?${queryString}`);
+      // console.log(pagination._page);
+
+      const url = queryString 
+        ? `http://localhost:8080/products?${queryString}`
+        : "http://localhost:8080/products";
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch products: ${response.status} ${response.statusText}`
         );
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch products: ${response.status} ${response.statusText}`
-          );
-        }
-
-        const data = await response.json();
-        resolve({ data });
-      } else {
-        resolve({ data: [] }); // No filters or sort
       }
+      const data = await response.json();
+        // Get the total number of items from the header
+      const totalItems = response.headers.get("X-Total-Count");
+      resolve({ data: {products:data,totalItems: totalItems } });
+
     } catch (error) {
       console.error("Fetch Error:", error);
       reject(error);
@@ -59,3 +54,42 @@ export function fetchProductByFilter({ filter, sort }) {
   });
 }
 
+export function fetchCategory() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const url = "http://localhost:8080/category"
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch products: ${response.status} ${response.statusText}`
+        );
+      }
+      const data = await response.json();
+      resolve({ data });
+
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      reject(error);
+    }
+  });
+}
+
+export function fetchBrand() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const url = "http://localhost:8080/brand"
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch products: ${response.status} ${response.statusText}`
+        );
+      }
+      const data = await response.json();
+      resolve({ data });
+
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      reject(error);
+    }
+  });
+}

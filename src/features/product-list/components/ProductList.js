@@ -67,7 +67,7 @@ export function ProductList() {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({
     _page: page,
-    _limit: ITEMS_PER_PAGE,
+    _per_page: ITEMS_PER_PAGE,
   });
 
   const filters = [
@@ -114,10 +114,11 @@ export function ProductList() {
 
   function handlePage(page) {
     setPage(page);
-    setPagination({ _page: page, _limit: ITEMS_PER_PAGE });
+    setPagination({ _page: page, _per_page: ITEMS_PER_PAGE });
   }
 
   useEffect(() => {
+    // const pagination = { _page:page, _limit:ITEMS_PER_PAGE };
     dispatch(fetchAllProductsByFilterAsync({ filter, sort, pagination }));
   }, [dispatch, filter, sort, pagination]);
 
@@ -217,7 +218,7 @@ export function ProductList() {
               handlePage={handlePage}
               page={page}
               setPage={setPage}
-              totalItems={55}
+              totalItems={totalItems}
             />
           </main>
         </div>
@@ -474,7 +475,7 @@ function ProductGrid({ StarIcon, products }) {
           <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
               {products.map((product) => (
-                <Link to="/product-detail">
+                <Link to={`/product-detail/${product.id}`}>
                   <div
                     key={product.id}
                     className="group relative border-solid border-2 border-gray-200 p-2"

@@ -1,42 +1,62 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchAuth } from './authAPI';
+import { checkUser, createUser } from './authAPI';
 
 const initialState = {
-  value: 0,
+  loggedInUser: null,
   status: 'idle',
+  error: null
 };
 
-export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
-  async (amount) => {
-    const response = await fetchCount(amount);
+export const createUserAsync = createAsyncThunk(
+  'user/createUser',
+  async (loggedInData) => {
+    const response = await createUser(loggedInData);
+    return response.data;
+  }
+);
+
+export const checkUserAsync = createAsyncThunk(
+  'user/checkUser',
+  async (loginInfo) => {
+    console.log(loginInfo)
+    const response = await checkUser(loginInfo);
+    console.log(response.data)
     return response.data;
   }
 );
 
 export const authSlice = createSlice({
-  name: 'counter',
+  name: 'user',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
+
   },
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
+      .addCase(createUserAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
+      .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.value += action.payload;
+        state.loggedInUser = action.payload;
+      })
+      .addCase(checkUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(checkUserAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.loggedInUser = action.payload;
+      })
+      .addCase(checkUserAsync.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.error;
       });
   },
 });
 
-export const { increment } = counterSlice.actions;
-
-export const selectCount = (state) => state.counter.value;
 
 
-export default counterSlice.reducer;
+export const loggedInUserSelector = (state) => state.auth.loggedInUser;
+export const errorSelector = (state) => state.auth.error;
+const authReducer = authSlice.reducer
+export default authReducer;

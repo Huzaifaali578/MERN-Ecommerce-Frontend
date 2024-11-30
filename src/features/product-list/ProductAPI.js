@@ -23,14 +23,12 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
       }
 
       // Add pagination
-      // console.log("pagination", pagination)
       for (let key in pagination) {
         queryString += `${key}=${pagination[key]}&`
       }
-      // console.log("pagination", pagination, queryString)
 
-      // console.log("Query String:", `http://localhost:8080/products?${queryString}`);
-      // console.log(pagination._page);
+      console.log(pagination)
+      console.log(queryString)
 
       const url = queryString 
         ? `http://localhost:8080/products?${queryString}`
@@ -43,9 +41,8 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
         );
       }
       const data = await response.json();
-        // Get the total number of items from the header
-      const totalItems = response.headers.get("X-Total-Count");
-      resolve({ data: {products:data,totalItems: totalItems } });
+      // Get the total number of items from the header
+      resolve({ data });
 
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -85,6 +82,28 @@ export function fetchBrand() {
         );
       }
       const data = await response.json();
+      resolve({ data });
+
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      reject(error);
+    }
+  });
+}
+
+export function fetchProductById(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log(id)
+      const url = "http://localhost:8080/products/"+ id
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch products: ${response.status} ${response.statusText}`
+        );
+      }
+      const data = await response.json();
+      console.log(data)
       resolve({ data });
 
     } catch (error) {

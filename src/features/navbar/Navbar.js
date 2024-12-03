@@ -32,7 +32,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: "Your Profile", link: "#" },
-  { name: "My order", href: "/my-order" },
+  { name: "My order", link: "/my-order" },
   { name: "Sign out", link: "/login" },
 ];
 
@@ -194,15 +194,16 @@ export default function Navbar({ children }) {
                 </span>}
               </div>
               <div className="mt-3 space-y-1 px-2">
-                {userNavigation.map((item) => (
+                {userNavigation.map((item, index) => (
+                  <Link>
                   <DisclosureButton
-                    key={item.name}
-                    as="a"
-                    href={item.href}
+                    key={index}
+                    to={item.link}
                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                   >
                     {item.name}
-                  </DisclosureButton>
+                    </DisclosureButton>
+                    </Link>
                 ))}
               </div>
             </div>

@@ -8,20 +8,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
-  loggedInUserSelector,
-  updateAddressAsync,
-} from "../features/Authorization/authSlice";
-import {
   createOrderAsync,
   currentOrderSelector,
 } from "../features/Orders/orderSlice";
+import { updateUserAddressAsync, userInfoSelector } from "../features/user/userSlice";
 
 export default function Checkout() {
   const dispatch = useDispatch();
   // const [open, setOpen] = useState(true);
   const items = useSelector(cartSelector);
   const currentOrder = useSelector(currentOrderSelector);
-  const user = useSelector(loggedInUserSelector);
+  const user = useSelector(userInfoSelector);
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
     0
@@ -91,7 +88,7 @@ export default function Checkout() {
               className="bg-gray-200 px-5 mt-12 py-7"
               onSubmit={handleSubmit((data) => {
                 dispatch(
-                  updateAddressAsync({
+                  updateUserAddressAsync({
                     ...user,
                     addresses: [...user.addresses, data],
                   })

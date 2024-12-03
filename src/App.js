@@ -14,6 +14,8 @@ import { loggedInUserSelector } from './features/Authorization/authSlice';
 import PageNotFound from './pages/404';
 import OrderPlaced from './pages/OrderPlaced';
 import UserOrderPage from './pages/UserOrderPage';
+import MyProfilePage from './pages/MyProfilePage';
+import { fetchUserInfoAsync, updateUserAddressAsync } from './features/user/userSlice';
 
 // import Home from './pages/Home';
 
@@ -26,7 +28,8 @@ const router = createBrowserRouter([
   {path: "/product-detail/:id", element:<Protected><ProductDetailPage /></Protected>},
   {path: "*", element:<PageNotFound />},
   {path: "/order-succes/:id", element:<OrderPlaced />},
-  {path: "/my-order", element:<UserOrderPage />},
+  {path: "/my-order", element:<Protected><UserOrderPage /></Protected>},
+  {path: "/my-profile", element:<Protected><MyProfilePage /></Protected>},
 ])
 
 function App() {
@@ -36,8 +39,10 @@ function App() {
   useEffect(() => {
     if (user) {
       dispatch(fetchItemByUserIdAsync(user.id))
+      dispatch(fetchUserInfoAsync(user.id))
+      console.log("app", user.id)
     } else {
-      
+      console.log("user not found")
     }
   }, [dispatch, user])
   return (

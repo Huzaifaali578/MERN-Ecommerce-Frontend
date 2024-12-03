@@ -11,7 +11,7 @@ import { addToCartAsync, cartSelector } from "../../cart/cartSlice";
 import { addToCart } from "../../cart/CartAPI";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { loggedInUserSelector } from "../../Authorization/authSlice";
+import { userInfoSelector } from "../../user/userSlice";
 // import classNames from "classnames";
 // import { StarIcon } from "@heroicons/react/solid";
 
@@ -99,7 +99,7 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const product = useSelector(productDetailByIdSelector);
   const param = useParams();
-  const user = useSelector(loggedInUserSelector)
+  const user = useSelector(userInfoSelector)
   const items = useSelector(cartSelector)
 
   function handleAddToCart(e) {

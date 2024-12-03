@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { checkUser, createUser, updateAddress } from './authAPI';
+import { checkUser, createUser } from './authAPI';
+// import { updateAddress } from '../user/userAPL';
 
 const initialState = {
   loggedInUser: null,
@@ -25,13 +26,13 @@ export const checkUserAsync = createAsyncThunk(
   }
 );
 
-export const updateAddressAsync = createAsyncThunk(
-  'user/updateAddress',
-  async (update) => {
-    const response = await updateAddress(update);
-    return response.data;
-  }
-);
+// export const updateAddressAsync = createAsyncThunk(
+//   'user/updateAddress',
+//   async (update) => {
+//     const response = await updateAddress(update);
+//     return response.data;
+//   }
+// );
 
 
 
@@ -61,17 +62,17 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.error = action.error;
       })
-      .addCase(updateAddressAsync.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(updateAddressAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.loggedInUser = action.payload;
-      })
-      .addCase(updateAddressAsync.rejected, (state, action) => {
-        state.status = 'idle';
-        state.error = action.error;
-      });
+      // .addCase(updateAddressAsync.pending, (state) => {
+      //   state.status = 'loading';
+      // })
+      // .addCase(updateAddressAsync.fulfilled, (state, action) => {
+      //   state.status = 'idle';
+      //   state.loggedInUser = action.payload;
+      // })
+      // .addCase(updateAddressAsync.rejected, (state, action) => {
+      //   state.status = 'idle';
+      //   state.error = action.error;
+      // });
   },
 });
 

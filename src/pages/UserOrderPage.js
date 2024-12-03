@@ -6,7 +6,7 @@ export default function UserOrderPage() {
     return (
         <>
             <Navbar>
-            <h1 className="m-auto text-3xl"> My Orders  </h1>
+            <h1 className='text-4xl m-9 font-bold text-center'> My Orders  </h1>
             <UserOrders />
             </Navbar>
 

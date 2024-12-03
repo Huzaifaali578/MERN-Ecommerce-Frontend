@@ -44,3 +44,19 @@ export function removeFromCart(itemId) {
   }
   );
 }
+
+
+export function resetCart(usedId) {
+  return new Promise(async (resolve) => {
+    const response = await fetchItemByUserId(usedId);
+    // console.log(items)
+    const items = await response.data
+    for (let item of items) {
+      console.log(item)
+      await removeFromCart(item.id)
+    }
+    resolve({ status: "success" })
+  }
+  );
+}
+

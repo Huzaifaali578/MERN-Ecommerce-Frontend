@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addToCart, fetchItemByUserId, removeFromCart, updateCart } from "./CartAPI"
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { addToCart, fetchItemByUserId, removeFromCart, resetCart, updateCart } from "./CartAPI"
 
 const initialState = {
   items: [],
-  status: "idle"
+  status: "idle",
 };
 
 export const addToCartAsync = createAsyncThunk(
@@ -40,6 +40,16 @@ export const removeFromCartAsync = createAsyncThunk(
   }
 );
 
+export const resetCartAsync = createAsyncThunk(
+  'cart/resetCart',
+  async (userId) => {
+    const response = await resetCart(userId);
+    return response.data;
+  }
+);
+
+
+
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -48,13 +58,13 @@ export const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(addToCartAsync.pending, (state) => {
-      state.status = 'loading';
-    })
-    .addCase(addToCartAsync.fulfilled, (state, action) => {
-      state.status = 'idle';
-      state.items.push(action.payload)
-    })
+      .addCase(addToCartAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addToCartAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.items.push(action.payload)
+      })
       .addCase(fetchItemByUserIdAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -67,7 +77,7 @@ export const cartSlice = createSlice({
       })
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex((item)=> item.id === action.payload.id)
+        const index = state.items.findIndex((item) => item.id === action.payload.id)
         state.items[index] = action.payload;
       })
       .addCase(removeFromCartAsync.pending, (state) => {
@@ -81,8 +91,14 @@ export const cartSlice = createSlice({
           // Remove the item from the array
           state.items.splice(index, 1);
         }
-      });
-      
+      })
+      .addCase(resetCartAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(resetCartAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.items = []
+      })
   },
 });
 

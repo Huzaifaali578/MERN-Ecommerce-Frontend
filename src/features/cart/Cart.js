@@ -1,16 +1,7 @@
 import React from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { increment, incrementAsync, selectCount } from "./cartSlice";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   Dialog,
-//   DialogBackdrop,
-//   DialogPanel,
-//   DialogTitle,
-// } from "@headlessui/react";
-// import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { cartSelector, removeFromCartAsync, updateCartAsync } from "./cartSlice";
 
 
@@ -29,6 +20,7 @@ export default function Cart() {
 
   return (
     <>
+      {/* {!items.length && <Navigate to="/" replace={true}></Navigate>} */}
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
           <div className="flow-root">
@@ -70,8 +62,6 @@ export default function Cart() {
                           <option value="4">4</option>
                         </select>
                       </div>
-
-
                       <div className="flex">
                         <button
                           type="button"
@@ -90,11 +80,11 @@ export default function Cart() {
         </div>
 
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-          <div className="flex justify-between my-5 text-base font-medium text-gray-900">
+          <div className="flex justify-between my-5 text-base font-bold text-gray-900">
             <p>Subtotal</p>
             <p>${Math.ceil(totalAmount)}</p>
           </div>
-          <div className="flex justify-between my-5 text-base font-medium text-gray-900">
+          <div className="flex justify-between my-5 text-base font-bold text-gray-900">
             <p>Total Item in Cart</p>
             <p>{totalItems} items</p>
           </div>

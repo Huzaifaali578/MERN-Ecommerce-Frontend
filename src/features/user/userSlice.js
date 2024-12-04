@@ -63,10 +63,10 @@ export const userSlice = createSlice({
         state.status = 'idle';
         state.userInfo = action.payload;
       });
-  },
-});
-
-// export const { increment } = counterSlice.actions;
+    },
+  });
+  
+  // export const { increment } = counterSlice.actions;
 
 export const myOrderSelector = (state) => state.user.myOrder;
 export const userInfoSelector = (state) => state.user.userInfo;

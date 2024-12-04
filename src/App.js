@@ -16,6 +16,8 @@ import OrderPlaced from './pages/OrderPlaced';
 import UserOrderPage from './pages/UserOrderPage';
 import MyProfilePage from './pages/MyProfilePage';
 import { fetchUserInfoAsync, updateUserAddressAsync } from './features/user/userSlice';
+import Logout from './features/Authorization/components/Logout';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 // import Home from './pages/Home';
 
@@ -30,6 +32,8 @@ const router = createBrowserRouter([
   {path: "/order-succes/:id", element:<OrderPlaced />},
   {path: "/my-order", element:<Protected><UserOrderPage /></Protected>},
   {path: "/my-profile", element:<Protected><MyProfilePage /></Protected>},
+  {path: "/logout", element:<Logout />},
+  {path: "/forgot-password", element:<ForgotPasswordPage />},
 ])
 
 function App() {

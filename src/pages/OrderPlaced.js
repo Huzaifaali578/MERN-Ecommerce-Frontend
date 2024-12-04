@@ -4,11 +4,12 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { resetCartAsync } from '../features/cart/cartSlice';
 import { loggedInUserSelector } from '../features/Authorization/authSlice';
 import { resetOrder } from '../features/Orders/orderSlice';
+import { userInfoSelector } from '../features/user/userSlice';
 
 export default function OrderPlaced() {
     const param = useParams()
     const dispatch = useDispatch()
-    const user = useSelector(loggedInUserSelector)
+    const user = useSelector(userInfoSelector)
 
     useEffect(() => {
         // reset Order

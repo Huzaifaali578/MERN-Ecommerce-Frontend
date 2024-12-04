@@ -7,7 +7,7 @@ import {
 } from "../ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addToCartAsync, cartSelector } from "../../cart/cartSlice";
+import { addToCartAsync, cartSelector, updateCartAsync } from "../../cart/cartSlice";
 import { addToCart } from "../../cart/CartAPI";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -106,8 +106,17 @@ export default function ProductDetail() {
     e.preventDefault();
   
     if (product) {
-        // Dispatch the action with the updated item
-      dispatch(addToCartAsync({ quantity: 1, user:user.id, ...product }));
+
+      if (items) {
+        const productIndex = items.findIndex((item) => item.id === product.id);
+        if (productIndex !== -1) {
+          const item = items[productIndex]
+          dispatch(updateCartAsync({ ...item, quantity: item.quantity + 1 }))
+          alert("Quantity is increased in cart")
+        } else {
+          dispatch(addToCartAsync({quantity: 1, user: user.id, ...product}))
+        }
+      }
     } else {
       console.log("Product is not available yet");
     }

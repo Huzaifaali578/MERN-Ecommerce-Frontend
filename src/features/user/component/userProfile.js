@@ -12,7 +12,9 @@ export default function MyProfile() {
   const user = useSelector(userInfoSelector);
   const [editFormIndex, setEditFormIndex] = useState(-1);
   const [addNewAddressForm, setAddNewAddressForm] = useState(false);
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    
+    // TODO: we will add payment section when work on backend
   const {
     register,
     handleSubmit,
@@ -320,7 +322,7 @@ export default function MyProfile() {
         ) : null}
       </div>
 
-      {user.addresses.map((address, index) => (
+      {user.addresses?.map((address, index) => (
         <div>
           <div className="lg:col-span-3">
             {editFormIndex === index ? (

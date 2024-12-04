@@ -18,11 +18,21 @@ import MyProfilePage from './pages/MyProfilePage';
 import { fetchUserInfoAsync, updateUserAddressAsync } from './features/user/userSlice';
 import Logout from './features/Authorization/components/Logout';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ProtectedAdmin from './features/Authorization/components/ProtectedAdmin';
+import AdminProductDetailPage from './pages/AdminProductDetailPage';
+import AdminHome from './pages/AdminHome';
+import AdminProductFormPage from './pages/AdminProductFormPage';
 
 // import Home from './pages/Home';
 
 const router = createBrowserRouter([
-  {path: "/", element: <Home />},
+  // Admin Routing
+  { path: "/admin", element: <ProtectedAdmin><AdminHome /></ProtectedAdmin> },
+  { path: "/admin/product-detail/:id", element: <ProtectedAdmin><AdminProductDetailPage /></ProtectedAdmin> },
+  { path: "/admin/product-form", element: <ProtectedAdmin><AdminProductFormPage /></ProtectedAdmin> },
+  { path: "/admin/product-form/edit/:id", element: <ProtectedAdmin><AdminProductFormPage /></ProtectedAdmin> },
+  // User Routing
+  { path: "/", element: <Protected><Home /></Protected> },
   {path: "/login", element:<LoginPage />},
   {path: "/signup", element:<SignUpPage />},
   {path: "/cart", element:<Protected><CartPage /></Protected>},

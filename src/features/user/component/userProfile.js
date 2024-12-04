@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  myOrderSelector,
   updateUserAddressAsync,
   userInfoSelector,
 } from "../userSlice";
@@ -59,6 +58,7 @@ export default function MyProfile() {
     reset();
     setAddNewAddressForm(false);
   }
+  console.log(user)
 
   return (
     <>
@@ -69,6 +69,9 @@ export default function MyProfile() {
         <h3 className="text-2xl mb-4 font-bold tracking-tight text-red-900">
           Email: {user.email}
         </h3>
+        {user.role === "admin" && <h3 className="text-2xl mb-4 font-bold tracking-tight text-red-900">
+          role: {user.role}
+        </h3>}
       </div>
       <div>
         <button

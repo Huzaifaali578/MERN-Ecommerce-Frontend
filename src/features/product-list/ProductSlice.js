@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchProductByFilter, fetchCategory, fetchBrand, fetchProductById } from './ProductAPI';
+import { fetchProductByFilter, fetchCategory, fetchBrand, fetchProductById, createProduct, updateProduct } from './ProductAPI';
 
 const initialState = {
   products: [],
@@ -46,10 +46,34 @@ export const fetchProductByIdAsync = createAsyncThunk(
   }
 );
 
+export const createProductAsync = createAsyncThunk(
+  'product/createProduct',
+  async (product) => {
+    // console.log(id)
+    const response = await createProduct(product);
+    // console.log(response.data)
+    return response.data;
+  }
+);
+
+export const updateProductAsync = createAsyncThunk(
+  'product/updateProduct',
+  async (update) => {
+    // console.log(id)
+    const response = await updateProduct(update);
+    // console.log(response.data)
+    return response.data;
+  }
+);
+
 export const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    resetProductDetailById: ((state) => {
+      state.productDetailById = null
+    })
+  },
   extraReducers: (builder) => {
     builder
       // Fetch Products by Filter
@@ -96,7 +120,31 @@ export const productSlice = createSlice({
       })
       .addCase(fetchProductByIdAsync.rejected, (state, action) => {
         state.status = 'failed';
+      })
+      // Create new product by Admin 
+      .addCase(createProductAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createProductAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.products.push(action.payload);
+      })
+      .addCase(createProductAsync.rejected, (state, action) => {
+        state.status = 'failed';
+      })
+      // Update edited product by Admin 
+      .addCase(updateProductAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateProductAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        const index = state.products.findIndex((item)=> item.id === action.payload.id)
+        state.products[index] = action.payload;
+      })
+      .addCase(updateProductAsync.rejected, (state, action) => {
+        state.status = 'failed';
       });
+
   },
 });
 
@@ -109,6 +157,7 @@ export const productStatusSelector = (state) => state.product.status;
 export const categoriesStatusSelector = (state) => state.product.categoriesStatus;
 export const brandsStatusSelector = (state) => state.product.brandsStatus;
 export const productDetailByIdSelector = (state) => state.product.productDetailById;
+export const { resetProductDetailById } = productSlice.actions;
 
 
 export default productSlice.reducer;

@@ -6,6 +6,7 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
       // sort = {_sort: "price", _order: "desc"};
       // pagination = {_page: 1, _limit: 10};
       // TODO: on server we will support multi value filter
+      // TODO: server will filter the deleted peoduct
       let queryString = "";
 
       // Add filters
@@ -111,4 +112,31 @@ export function fetchProductById(id) {
       reject(error);
     }
   });
+}
+
+export function createProduct(product) {
+  return new Promise(async (resolve, reject) => {
+    const response = await fetch("http://localhost:8080/products", {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: { "content-type": "application/json" },
+    });
+    const data = await response.json()
+    resolve({ data });
+  })
+}
+
+
+export function updateProduct(update) {
+  return new Promise(async (resolve) => {
+    console.log(update.id)
+    const response = await fetch("http://localhost:8080/products/"+update.id, {
+      method: "PATCH",
+      body: JSON.stringify(update),
+      headers: { "content-type": "application/jsom" }
+    });
+    const data = await response.json()
+    resolve({ data })
+  }
+  );
 }

@@ -11,12 +11,12 @@ export default function SignUP() {
     watch,
     formState: { errors },
   } = useForm();
-    console.log(errors);
-    const user = useSelector(loggedInUserSelector)
-    const dispatch = useDispatch()
+  console.log(errors);
+  const user = useSelector(loggedInUserSelector);
+  const dispatch = useDispatch();
   return (
-      <>
-          {user && <Navigate to="/login"></Navigate>}
+    <>
+      {user && <Navigate to="/login"></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -34,12 +34,21 @@ export default function SignUP() {
             noValidate
             action="#"
             className="space-y-6"
-                      onSubmit={handleSubmit((data) => {
-                dispatch(createUserAsync({name: data.name, email: data.email, password: data.password, address: []}))
+            onSubmit={handleSubmit((data) => {
+              dispatch(
+                createUserAsync({
+                  name: data.name,
+                  email: data.email,
+                  password: data.password,
+                  address: [],
+                  role: "user",
+                  // TODO: This role can be directly given on backend
+                })
+              );
               console.log(data);
             })}
           >
-              <div>
+            <div>
               <label
                 htmlFor="email"
                 className="block text-sm/6 font-medium text-gray-900"
@@ -111,7 +120,7 @@ export default function SignUP() {
                     pattern: {
                       value:
                         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-                        message: `- at least 8 characters\n
+                      message: `- at least 8 characters\n
                       - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number\n
                       - Can contain special characters\n`,
                     },
@@ -136,8 +145,9 @@ export default function SignUP() {
                 <input
                   id="confirmPassword"
                   {...register("confirmPassword", {
-                      required: "confirm-password is Required",
-                      validate: (value, formValues) => value === formValues.password || "password not matching"
+                    required: "confirm-password is Required",
+                    validate: (value, formValues) =>
+                      value === formValues.password || "password not matching",
                   })}
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"

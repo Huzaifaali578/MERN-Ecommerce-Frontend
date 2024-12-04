@@ -8,7 +8,7 @@ import {
   fetchCategoryAsync,
   productSelector,
   totalItemsSelector,
-} from "../ProductSlice";
+} from "../../product-list/ProductSlice";
 import { useState } from "react";
 import {
   Dialog,
@@ -55,7 +55,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function ProductList() {
+export function AdminProductList() {
   const products = useSelector(productSelector);
   const categories = useSelector(categorySelector);
   const brands = useSelector(brandSelector);
@@ -470,53 +470,71 @@ function ProductGrid({ StarIcon, products }) {
   return (
     <>
       <div className="lg:col-span-3">
+        <Link
+        to="product-form"
+          type="submit"
+          className="rounded-md my-4 mx-10 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Add new product
+        </Link>
         {/* // this is our product list page */}
         <div className="bg-white ">
           <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
               {products.map((product) => (
-                <Link to={`/product-detail/${product.id}`}>
-                  <div
-                    key={product.id}
-                    className="group relative border-solid border-2 border-gray-200 p-2"
-                  >
-                    <img
-                      alt={product.title}
-                      src={product.thumbnail}
-                      className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-60"
-                    />
-                    <div className="mt-4 flex justify-between">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <a href={product.thumbnail}>
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0"
-                            />
-                            {product.title}
-                          </a>
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          <StarIcon className="w-6 h-6 inline" />
-                          <span className="align-bottom">{product.rating}</span>
-                        </p>
+                <div>
+                  <Link to={`/product-detail/${product.id}`}>
+                    <div
+                      key={product.id}
+                      className="group relative border-solid border-2 border-gray-200 p-2"
+                    >
+                      <img
+                        alt={product.title}
+                        src={product.thumbnail}
+                        className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-60"
+                      />
+                      <div className="mt-4 flex justify-between">
+                        <div>
+                          <h3 className="text-sm text-gray-700">
+                            <a href={product.thumbnail}>
+                              <span
+                                aria-hidden="true"
+                                className="absolute inset-0"
+                              />
+                              {product.title}
+                            </a>
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-500">
+                            <StarIcon className="w-6 h-6 inline" />
+                            <span className="align-bottom">
+                              {product.rating}
+                            </span>
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm block font-medium text-gray-900">
+                            ${" "}
+                            {Math.round(
+                              product.price *
+                                (1 - product.discountPercentage / 100)
+                            )}
+                          </p>
+                          <p className="text-sm block font-medium line-through text-gray-500">
+                            $ {Math.round(product.price)}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm block font-medium text-gray-900">
-                          ${" "}
-                          {Math.round(
-                            product.price *
-                              (1 - product.discountPercentage / 100)
-                          )}
-                        </p>
-                        <p className="text-sm block font-medium line-through text-gray-500">
-                          $ {Math.round(product.price)}
-                        </p>
-                      </div>
+                      { product.deleted && <p className="text-sm text-red-700"> product daleted </p>}
                     </div>
-                    { product.deleted && <p className="text-sm text-red-700"> product daleted </p>}
-                  </div>
-                </Link>
+                  </Link>
+                  <Link
+                    to={`/admin/product-form/edit/${product.id}`}
+                    type="submit"
+                    className="rounded-md my-5 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    edit product
+                  </Link>
+                </div>
               ))}
             </div>
           </div>

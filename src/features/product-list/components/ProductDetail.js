@@ -12,6 +12,7 @@ import { addToCart } from "../../cart/CartAPI";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { userInfoSelector } from "../../user/userSlice";
+import { discountPrice } from "../../../app/constans";
 // import classNames from "classnames";
 // import { StarIcon } from "@heroicons/react/solid";
 
@@ -206,7 +207,7 @@ export default function ProductDetail() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
-              {product.price}
+              $ {discountPrice(product)}
             </p>
             {/* Reviews */}
             <div className="mt-6">

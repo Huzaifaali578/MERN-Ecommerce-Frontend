@@ -33,7 +33,7 @@ import {
 // pagination
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-import { ITEMS_PER_PAGE } from "../../../app/constans";
+import { discountPrice, ITEMS_PER_PAGE } from "../../../app/constans";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -514,17 +514,15 @@ function ProductGrid({ StarIcon, products }) {
                         <div>
                           <p className="text-sm block font-medium text-gray-900">
                             ${" "}
-                            {Math.round(
-                              product.price *
-                                (1 - product.discountPercentage / 100)
-                            )}
+                            {discountPrice(product)}
                           </p>
                           <p className="text-sm block font-medium line-through text-gray-500">
                             $ {Math.round(product.price)}
                           </p>
                         </div>
                       </div>
-                      { product.deleted && <p className="text-sm text-red-700"> product daleted </p>}
+                      {product.deleted && ( <div> <p className="text-sm text-red-700"> product daleted </p> </div> )}
+                      {product.stock <= 0 && (<div> <p className="text-sm text-red-700"> Out Of stock </p></div>)}
                     </div>
                   </Link>
                   <Link

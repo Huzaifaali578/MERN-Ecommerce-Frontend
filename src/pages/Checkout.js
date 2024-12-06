@@ -12,6 +12,7 @@ import {
   currentOrderSelector,
 } from "../features/Orders/orderSlice";
 import { updateUserAddressAsync, userInfoSelector } from "../features/user/userSlice";
+import { discountPrice } from "../app/constans";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function Checkout() {
   const currentOrder = useSelector(currentOrderSelector);
   const user = useSelector(userInfoSelector);
   const totalAmount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => discountPrice(item) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -54,14 +55,14 @@ export default function Checkout() {
       totalAmount,
       totalItems,
       paymentMethod,
-        addressSelected,
+      addressSelected,
       status: "pending" // other status can be delivered and received
     };
     if (addressSelected && paymentMethod) {
       dispatch(createOrderAsync(order));
       console.log(order);
     } else {
-        // TODO: need to redirect from here to new page of order success
+      // TODO: need to redirect from here to new page of order success
       alert("Enter Address and payment method");
     }
     // TODO: redirect to order-succes page
@@ -90,9 +91,10 @@ export default function Checkout() {
                 dispatch(
                   updateUserAddressAsync({
                     ...user,
-                    addresses: [...user.addresses, data],
+                    addresses: user.addresses ? [...user.addresses, data] : [data],
                   })
                 );
+                
                 reset();
               })}
             >
@@ -338,7 +340,7 @@ export default function Checkout() {
                       </p>
                       <div>
                         <ul role="list">
-                          {user.addresses.map((address, index) => (
+                          {user.addresses?.map((address, index) => (
                             <li
                               key={index}
                               className="flex justify-between px-5 gap-x-6 py-5 border-solid border-2 border-gray-400 mb-4 mt-3"
@@ -468,10 +470,10 @@ export default function Checkout() {
                               <h3>
                                 <a href={item.href}>{item.title}</a>
                               </h3>
-                              <p className="ml-4">{item.price}</p>
+                              <p className="ml-4">$ {discountPrice(item)}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
-                              {item.color}
+                              {item.brand}
                             </p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">

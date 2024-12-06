@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { myOrderSelector, userInfoSelector, userOrderAsync } from '../userSlice';
 import { Link } from 'react-router-dom';
+import { discountPrice } from '../../../app/constans';
 
 
 
@@ -46,7 +47,7 @@ export default function UserOrders() {
                           <h3>
                             <a href={item.href}>{item.title}</a>
                           </h3>
-                          <p className="ml-4">{item.price}</p>
+                          <p className="ml-4">{discountPrice(item)}</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
                           {item.brand}

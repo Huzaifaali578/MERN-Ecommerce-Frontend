@@ -1,15 +1,28 @@
 export function addToCart(userCartData) {
-  return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart", {
-      method: "POST",
-      body: JSON.stringify(userCartData),
-      headers: { "content-type": "application/jsom" }
-    });
-    const data = await response.json()
-    resolve({ data })
-  }
-  );
+  console.log("userCartData:", userCartData);
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/cart", {
+        method: "POST",
+        body: JSON.stringify(userCartData),
+        headers: { "Content-Type": "application/json" } // Fixed typo here
+      });
+
+      if (!response.ok) {
+        // If the response status is not OK, reject the promise with the error
+        const errorData = await response.json();
+        return reject(errorData);
+      }
+
+      const data = await response.json();
+      resolve({ data });
+    } catch (error) {
+      console.error("Error in addToCart:", error);
+      reject({ error: "An error occurred while adding to cart." });
+    }
+  });
 }
+
 
 export function fetchItemByUserId(userId) {
   return new Promise(async (resolve) => {
@@ -21,13 +34,16 @@ export function fetchItemByUserId(userId) {
 }
 
 export function updateCart(update) {
+  console.log(update)
+  console.log(update.id)
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/cart/"+update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
-      headers: { "content-type": "application/jsom" }
+      headers: { "Content-Type": "application/json" }
     });
     const data = await response.json()
+    console.log(data)
     resolve({ data })
   }
   );

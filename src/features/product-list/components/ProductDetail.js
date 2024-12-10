@@ -8,8 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addToCartAsync, cartSelector, updateCartAsync } from "../../cart/cartSlice";
-import { addToCart } from "../../cart/CartAPI";
-import { toast } from "react-toastify";
+import { toast, ToastContainer  } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { userInfoSelector } from "../../user/userSlice";
 import { discountPrice } from "../../../app/constans";
@@ -106,22 +105,26 @@ export default function ProductDetail() {
   function handleAddToCart(e) {
     e.preventDefault();
   
-    if (product) {
-
-      if (items) {
-        const productIndex = items.findIndex((item) => item.id === product.id);
-        if (productIndex !== -1) {
-          const item = items[productIndex]
-          dispatch(updateCartAsync({ ...item, quantity: item.quantity + 1 }))
-          alert("Quantity is increased in cart")
-        } else {
-          dispatch(addToCartAsync({quantity: 1, user: user.id, ...product}))
-        }
+    if (product && items) {
+      const existingCartItem = items.find((item) => item.product.id === product.id);
+  
+      if (existingCartItem) {
+        // If the product is already in the cart, update its quantity
+        const updatedItem = { id: existingCartItem.id, quantity: existingCartItem.quantity + 1 };
+        dispatch(updateCartAsync(updatedItem));
+        console.log(updatedItem)
+        toast.success("Quantity updated in the cart!");
+      } else {
+        // If the product is not in the cart, add it as a new item
+        const newCartItem = { product: product.id, user: user.id, quantity: 1 };
+        dispatch(addToCartAsync(newCartItem));
+        toast.success("Item added to the cart!");
       }
     } else {
-      console.log("Product is not available yet");
+      console.error("Product or items not available.");
     }
   }
+  
   
   useEffect(() => {
     dispatch(fetchProductByIdAsync(param.id));
@@ -130,6 +133,8 @@ export default function ProductDetail() {
   if (!product) return <div>Loading...</div>;
 
   return (
+    <>
+      <ToastContainer />
     <div className="bg-white">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
@@ -398,5 +403,6 @@ export default function ProductDetail() {
         </div>
       </div>
     </div>
+    </>
   );
 }

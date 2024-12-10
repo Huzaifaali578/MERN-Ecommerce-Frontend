@@ -18,6 +18,7 @@ import Pagination from "../../commen/Pagination";
 export default function AdminOrder() {
   const dispatch = useDispatch();
   const AllOrders = useSelector(AllOrdersSelector);
+  console.log(AllOrders)
   const totalOrders = useSelector(totalOrdersSelector);
   const [page, setPage] = useState(1);
   const [editableOrderId, setEditableOrderId] = useState(-1);
@@ -118,7 +119,7 @@ export default function AdminOrder() {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                  {AllOrders.map((order) => (
+                  {AllOrders?.map((order) => (
                     <tr
                       className="border-b border-gray-200 hover:bg-gray-100"
                       key={order.id}

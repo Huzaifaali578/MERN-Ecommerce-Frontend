@@ -42,8 +42,10 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
         );
       }
       const data = await response.json();
-      // Get the total number of items from the header
-      resolve({ data });
+      // // Get the total number of items from the header
+      // resolve({ data });
+      const totalItems = await response.headers.get('X-Total-Count');
+      resolve({ data: { products: data, totalItems: +totalItems } });
 
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -133,7 +135,7 @@ export function updateProduct(update) {
     const response = await fetch("http://localhost:8080/products/"+update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
-      headers: { "content-type": "application/jsom" }
+      headers: { "Content-Type": "application/json" }
     });
     const data = await response.json()
     resolve({ data })

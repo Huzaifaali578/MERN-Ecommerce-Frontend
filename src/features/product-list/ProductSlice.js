@@ -16,6 +16,7 @@ export const fetchAllProductsByFilterAsync = createAsyncThunk(
   'product/fetchProductByFilter',
   async ({ filter, sort, pagination }) => {
     const response = await fetchProductByFilter({ filter, sort, pagination });
+    console.log(response.data)
     return response.data; // Assuming response includes { data, totalItems }
   }
 );
@@ -59,7 +60,7 @@ export const createProductAsync = createAsyncThunk(
 export const updateProductAsync = createAsyncThunk(
   'product/updateProduct',
   async (update) => {
-    // console.log(id)
+    console.log(update)
     const response = await updateProduct(update);
     // console.log(response.data)
     return response.data;
@@ -82,8 +83,8 @@ export const productSlice = createSlice({
       })
       .addCase(fetchAllProductsByFilterAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.products = action.payload.data;
-        state.totalItems = action.payload.items;
+        state.products =action.payload.products;
+        state.totalItems = action.payload.totalItems;
       })
       .addCase(fetchAllProductsByFilterAsync.rejected, (state, action) => {
         state.status = 'failed';

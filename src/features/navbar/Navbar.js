@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../cart/cartSlice";
 import { loggedInUserSelector } from "../Authorization/authSlice";
+import { userInfoSelector } from "../user/userSlice";
 
 const user = {
   name: "Tom Cook",
@@ -40,7 +41,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ children }) {
-  const loggedUser = useSelector(loggedInUserSelector)
+  const loggedUser = useSelector(userInfoSelector)
+  console.log(loggedUser)
   const items = useSelector(cartSelector)
   return (
     <>
@@ -61,7 +63,7 @@ export default function Navbar({ children }) {
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {navigation.map((item) => (
-                     item[loggedUser.role] ?
+                     item[loggedUser?.role] ?
                       <Link
                         key={item.name}
                         to={item.link}

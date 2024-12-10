@@ -21,7 +21,7 @@ export default function Checkout() {
   const currentOrder = useSelector(currentOrderSelector);
   const user = useSelector(userInfoSelector);
   const totalAmount = items.reduce(
-    (amount, item) => discountPrice(item) * item.quantity + amount,
+    (amount, item) => discountPrice(item.product) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -51,7 +51,7 @@ export default function Checkout() {
   function handleOrder() {
     const order = {
       items,
-      user,
+      user:user.id,
       totalAmount,
       totalItems,
       paymentMethod,
@@ -458,8 +458,8 @@ export default function Checkout() {
                       <li key={item.id} className="flex py-6">
                         <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
-                            alt={item.title}
-                            src={item.thumbnail}
+                            alt={item.product.title}
+                            src={item.product.thumbnail}
                             className="size-full object-cover"
                           />
                         </div>
@@ -468,12 +468,12 @@ export default function Checkout() {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3>
-                                <a href={item.href}>{item.title}</a>
+                                <a href={item.product.id}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">$ {discountPrice(item)}</p>
+                              <p className="ml-4">$ {discountPrice(item.product)}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
-                              {item.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">

@@ -109,10 +109,10 @@ export default function AdminProductDetail() {
     if (product) {
 
       if (items) {
-        const productIndex = items.findIndex((item) => item.id === product.id);
+        const productIndex = items.findIndex((item) => item.product.id === product.id);
         if (productIndex !== -1) {
           const item = items[productIndex]
-          dispatch(updateCartAsync({ ...item, quantity: item.quantity + 1 }))
+          dispatch(updateCartAsync({ id: item.id, quantity: item.quantity + 1 }))
           alert("Quantity is increased in cart")
         } else {
           dispatch(addToCartAsync({quantity: 1, user: user.id, ...product}))

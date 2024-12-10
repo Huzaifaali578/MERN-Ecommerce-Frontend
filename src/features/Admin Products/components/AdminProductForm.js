@@ -38,7 +38,7 @@ export default function AdminProductForm() {
   }, [dispatch, params.id]);
 
   useEffect(() => {
-    console.log(selectedProduct);
+    // console.log(selectedProduct);
     if (selectedProduct && params.id) {
       setValue("title", selectedProduct.title);
       setValue("description", selectedProduct.description);
@@ -56,8 +56,9 @@ export default function AdminProductForm() {
 
   function handleDelete() {
     const product = { ...selectedProduct }
-    product.deleted = true; 
+    product.deleted = true;
     dispatch(updateProductAsync(product));
+    setFormSubmited(true)
   }
 
   return (
@@ -92,9 +93,15 @@ export default function AdminProductForm() {
       >
         <div className="space-y-12 bg-gray-100 p-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base/7 font-semibold text-gray-900">
+            <h2 className="text-base/7 font-bold text-gray-900">
               Add Product
             </h2>
+            <button
+              onClick={() => handleDelete()}
+              className="rounded-md mt-5 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-red:outline-indigo-600"
+            >
+              DELETE PRODUCT
+            </button>
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
@@ -331,12 +338,6 @@ export default function AdminProductForm() {
             Cancel
           </Link>
           <button
-            onClick={handleDelete()}
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rde-600"
-          >
-            DELETE
-          </button>
-          <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
@@ -344,6 +345,7 @@ export default function AdminProductForm() {
           </button>
         </div>
       </form>
+
     </>
   );
 }

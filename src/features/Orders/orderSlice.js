@@ -20,6 +20,7 @@ export const fetchAllOrdersAsync = createAsyncThunk(
   'order/fetchAllOrders',
   async ({sort, pagination}) => {
     const response = await fetchAllOrders(sort, pagination);
+    console.log(response.data)
     return response.data;
   }
 );
@@ -54,8 +55,8 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.AllOrders = action.payload.data;
-        state.totalOrders = action.payload.items;
+        state.AllOrders = action.payload.orders;
+        state.totalOrders = action.payload.totalOrders;
       })
       .addCase(updateOrderAsync.pending, (state) => {
         state.status = 'loading';

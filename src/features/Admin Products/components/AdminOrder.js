@@ -24,11 +24,20 @@ export default function AdminOrder() {
   const [editableOrderId, setEditableOrderId] = useState(-1);
   const [sort, setSort] = useState({});
 
+  // function handleSort(option) {
+  //   const newSort = { _sort: option.sort, _order: option.order };
+  //   setSort(newSort);
+  //   console.log("Updated Sort:", newSort);
+  // }
   function handleSort(option) {
-    const newSort = { _sort: option.sort, _order: option.order };
+    const newSort = {
+      _sort: option.sort,
+      _order: sort?._order === "desc" ? "asc" : "desc", // Fixed the condition
+    };
     setSort(newSort);
     console.log("Updated Sort:", newSort);
   }
+  
 
   const handleShow = () => {
     console.log("show");
@@ -38,7 +47,8 @@ export default function AdminOrder() {
     setEditableOrderId(order.id);
   };
   const handleUpdate = (e, order) => {
-    const updatedOrder = { ...order, status: e.target.value };
+    console.log(order.id)
+    const updatedOrder = { id: order.id, status: e.target.value };
     if (window.confirm("Are you sure you want to update the order status?")) {
       dispatch(updateOrderAsync(updatedOrder)).catch((error) => {
         console.error("Failed to update order status:", error);
@@ -82,7 +92,7 @@ export default function AdminOrder() {
                       onClick={() =>
                         handleSort({
                           sort: "id",
-                          order: sort?._order === "asc ? desc : asc",
+                          _order: "desc",
                         })
                       }
                     >
@@ -100,7 +110,7 @@ export default function AdminOrder() {
                       onClick={() =>
                         handleSort({
                           sort: "totalAmount",
-                          order: sort?._order === "asc ? desc : asc",
+                          _order: "desc",
                         })
                       }
                     >
@@ -136,11 +146,11 @@ export default function AdminOrder() {
                             <div className="mr-2">
                               <img
                                 className="w-6 h-6 rounded-full"
-                                src={item.thumbnail}
+                                src={item.product.thumbnail}
                               />
                             </div>
                             <span>
-                              {item.title} - #{item.quantity}- ${item.price}{" "}
+                              {item.product.title} - #{item.quantity}- ${item.product.price}{" "}
                             </span>
                           </div>
                         ))}

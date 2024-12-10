@@ -1,4 +1,4 @@
-export function fetchProductByFilter({ filter, sort, pagination }) {
+export function fetchProductByFilter({ filter, sort, pagination, admin }) {
   return new Promise(async (resolve, reject) => {
     try {
 
@@ -26,6 +26,10 @@ export function fetchProductByFilter({ filter, sort, pagination }) {
       // Add pagination
       for (let key in pagination) {
         queryString += `${key}=${pagination[key]}&`
+      }
+
+      if (admin) {
+        queryString += `admin=true&`
       }
 
       console.log(pagination)

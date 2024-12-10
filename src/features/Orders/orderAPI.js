@@ -10,13 +10,25 @@ export function createOrder(order) {
   }
   );
 }
+// export function createOrder(order) {
+//   return new Promise(async (resolve) => {
+//     const response = await fetch("http://localhost:8080/orders", {
+//       method: "POST",
+//       body: JSON.stringify(order),
+//       headers: { "Content-Type": "application/json" }
+//     });
+//     const data = await response.json()
+//     resolve({ data })
+//   }
+//   );
+// }
 
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/orders/"+order.id, {
       method: "PATCH",
       body: JSON.stringify(order),
-      headers: { "content-type": "application/jsom" }
+      headers: { "Content-Type": "application/json" }
     });
     const data = await response.json()
     resolve({ data })
@@ -43,7 +55,8 @@ export function fetchAllOrders(sort, pagination) {
     const response = await fetch(`http://localhost:8080/orders?${queryString}`)
     const data = await response.json()
     console.log("data", data)
-    resolve({ data })
+    const totalItems = await response.headers.get('X-Total-Count');
+    resolve({ data: { orders: data, totalOrders: +totalItems } })
   }
   );
 }

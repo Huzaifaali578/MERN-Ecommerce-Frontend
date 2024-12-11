@@ -96,7 +96,8 @@ export default function AdminProductForm() {
             <h2 className="text-base/7 font-bold text-gray-900">
               Add Product
             </h2>
-            {selectedProduct.deleted ? ( <div> <p className="text-sm text-red-700"> product daleted </p> </div>) : 
+            {selectedProduct.deleted ? (<div> <p className="text-sm text-red-700"> product daleted </p> </div>)
+             :
             <button
               onClick={() => handleDelete()}
               className="rounded-md mt-5 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-red:outline-indigo-600"

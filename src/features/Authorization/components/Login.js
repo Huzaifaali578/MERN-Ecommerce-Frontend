@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom'
-import { checkUserAsync, errorSelector, loggedInUserSelector } from '../authSlice';
+import { loginUserAsync, errorSelector, loggedInUserSelector } from '../authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // Heroicons
 
@@ -39,7 +39,7 @@ export default function Login() {
             action="#"
             className="space-y-6"
             onSubmit={handleSubmit((data) => {
-              dispatch(checkUserAsync({ email: data.email, password: data.password }));
+              dispatch(loginUserAsync({ email: data.email, password: data.password }));
               // console.log(data);
             })}
           >
@@ -99,7 +99,7 @@ export default function Login() {
                 </button>
               </div>
 
-              {error && (<p className="text-red-500">{error.message}</p>)}
+              {error && (<p className="text-red-500">{error || error.message}</p>)}
 
             </div>
 

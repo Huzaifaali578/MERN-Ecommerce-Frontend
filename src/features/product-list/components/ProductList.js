@@ -288,8 +288,8 @@ function MobileFilter({
                   </h3>
                   <DisclosurePanel className="pt-6">
                     <div className="space-y-6">
-                      {section.options.map((option, optionIdx) => (
-                        <div key={option.value} className="flex items-center">
+                      {section.options.map((option, optionIdx, index) => (
+                        <div key={index} className="flex items-center">
                           <input
                             defaultValue={option.value}
                             defaultChecked={option.checked}
@@ -350,8 +350,8 @@ function DesktopFilter({ handleFilter, products, filters }) {
               </h3>
               <DisclosurePanel className="pt-6">
                 <div className="space-y-4">
-                  {section.options.map((option, optionIdx) => (
-                    <div key={option.value} className="flex items-center">
+                  {section.options.map((option, optionIdx, index) => (
+                    <div key={index} className="flex items-center">
                       <input
                         defaultValue={option.value}
                         defaultChecked={option.checked}
@@ -391,8 +391,8 @@ function ProductGrid({ StarIcon, products }) {
         <div className="bg-white ">
           <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-              {products && products.map((product) => (
-                <Link to={`/product-detail/${product.id}`}>
+              {products && products.map((product, index) => (
+                <Link to={`/product-detail/${product.id}`} key={index}>
                   <div
                     key={product.id}
                     className="group relative border-solid border-2 border-gray-200 p-2"

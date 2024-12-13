@@ -16,7 +16,6 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../cart/cartSlice";
-import { loggedInUserSelector } from "../Authorization/authSlice";
 import { userInfoSelector } from "../user/userSlice";
 
 const user = {
@@ -198,7 +197,7 @@ export default function Navbar({ children }) {
               </div>
               <div className="mt-3 space-y-1 px-2">
                 {userNavigation.map((item, index) => (
-                  <Link>
+                  <Link key={index}>
                   <DisclosureButton
                     key={index}
                     to={item.link}

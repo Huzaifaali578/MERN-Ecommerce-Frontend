@@ -28,8 +28,8 @@ export const updateUserAddressAsync = createAsyncThunk(
 
 export const fetchUserInfoAsync = createAsyncThunk(
   'user/fetchUserInfo',
-  async (userId) => {
-    const response = await fetchUserInfo(userId);
+  async () => {
+    const response = await fetchUserInfo();
     console.log(response.data)
 
     return response.data;

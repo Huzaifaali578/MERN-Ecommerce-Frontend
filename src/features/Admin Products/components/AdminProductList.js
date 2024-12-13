@@ -34,6 +34,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { discountPrice, ITEMS_PER_PAGE } from "../../../app/constans";
+import { checkUserAuthSelector } from "../../Authorization/authSlice";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -56,8 +57,9 @@ function classNames(...classes) {
 }
 
 export function AdminProductList() {
-  const products = useSelector(productSelector);
   const categories = useSelector(categorySelector);
+  const products = useSelector(productSelector);
+  const checkUserAuth = useSelector(checkUserAuthSelector);
   const brands = useSelector(brandSelector);
   const totalItems = useSelector(totalItemsSelector);
   const dispatch = useDispatch();
@@ -133,7 +135,7 @@ export function AdminProductList() {
 
   return (
     <div>
-      <div className="bg-white ">
+      {checkUserAuth && <div className="bg-white ">
         <div>
           {/* Mobile filter dialog */}
           <MobileFilter
@@ -222,7 +224,7 @@ export function AdminProductList() {
             />
           </main>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -290,7 +292,7 @@ function MobileFilter({
                   <DisclosurePanel className="pt-6">
                     <div className="space-y-6">
                       {section.options.map((option, optionIdx) => (
-                        <div key={option.value} className="flex items-center">
+                        <div key={optionIdx} className="flex items-center">
                           <input
                             defaultValue={option.value}
                             defaultChecked={option.checked}
@@ -352,7 +354,7 @@ function DesktopFilter({ handleFilter, products, filters }) {
               <DisclosurePanel className="pt-6">
                 <div className="space-y-4">
                   {section.options.map((option, optionIdx) => (
-                    <div key={option.value} className="flex items-center">
+                    <div key={optionIdx} className="flex items-center">
                       <input
                         defaultValue={option.value}
                         defaultChecked={option.checked}
@@ -481,8 +483,8 @@ function ProductGrid({ StarIcon, products }) {
         <div className="bg-white ">
           <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-              {products.map((product) => (
-                <div>
+              {products.map((product, index) => (
+                <div key={index}>
                   <Link to={`/product-detail/${product.id}`}>
                     <div
                       key={product.id}

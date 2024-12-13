@@ -13,7 +13,7 @@ export default function UserOrders() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userOrderAsync(user.id))
+    dispatch(userOrderAsync(user?.id))
   }, [dispatch, user])
   
   return (

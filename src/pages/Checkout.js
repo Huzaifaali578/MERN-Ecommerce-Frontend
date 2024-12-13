@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import {
+  cartItemCheckSelector,
   cartSelector,
   removeFromCartAsync,
   updateCartAsync,
@@ -18,6 +19,7 @@ export default function Checkout() {
   const dispatch = useDispatch();
   // const [open, setOpen] = useState(true);
   const items = useSelector(cartSelector);
+  const cartItemCheck = useSelector(cartItemCheckSelector);
   const currentOrder = useSelector(currentOrderSelector);
   const user = useSelector(userInfoSelector);
   const totalAmount = items.reduce(
@@ -34,7 +36,7 @@ export default function Checkout() {
   const [addressSelected, setAddressSelected] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
   function handleUpadteQty(e, item) {
-    dispatch(updateCartAsync({ ...item, quantity: +e.target.value }));
+    dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }))
   }
   function handleRemove(e, itemId) {
     dispatch(removeFromCartAsync(itemId));
@@ -75,10 +77,16 @@ export default function Checkout() {
   }
   return (
     <>
-      {!items.length && <Navigate to="/" replace={true}></Navigate>}
-      {currentOrder && (
+      {!items.length && cartItemCheck && <Navigate to="/" replace={true}></Navigate>}
+      {currentOrder && currentOrder?.paymentMethod === 'cash' (
         <Navigate
           to={`/order-succes/${currentOrder.id}`}
+          replace={true}
+        ></Navigate>
+      )}
+      {currentOrder && currentOrder?.paymentMethod === 'card' (
+        <Navigate
+          to={`/stripe-checkout/`}
           replace={true}
         ></Navigate>
       )}
@@ -340,7 +348,7 @@ export default function Checkout() {
                       </p>
                       <div>
                         <ul role="list">
-                          {user.addresses?.map((address, index) => (
+                          {user?.addresses?.map((address, index) => (
                             <li
                               key={index}
                               className="flex justify-between px-5 gap-x-6 py-5 border-solid border-2 border-gray-400 mb-4 mt-3"

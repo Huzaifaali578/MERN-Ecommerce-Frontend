@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { resetCartAsync } from '../features/cart/cartSlice';
-import { loggedInUserSelector } from '../features/Authorization/authSlice';
 import { resetOrder } from '../features/Orders/orderSlice';
 import { userInfoSelector } from '../features/user/userSlice';
 
@@ -13,7 +12,7 @@ export default function OrderPlaced() {
 
     useEffect(() => {
         // reset Order
-        dispatch(resetCartAsync(user.id))
+        dispatch(resetCartAsync())
         // reset current Order
         dispatch(resetOrder())
     }, [dispatch, user])

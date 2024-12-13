@@ -20,9 +20,9 @@ export function updateAddress(update) {
     resolve({ data });
   });
 }
-export function fetchUserInfo(userId) {
+export function fetchUserInfo() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/users/"+userId)
+    const response = await fetch("http://localhost:8080/users/own")
     const data = await response.json();
     // TODO: on server it will only return some information of user (not password)
     resolve({ data });

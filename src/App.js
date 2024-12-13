@@ -10,7 +10,7 @@ import Protected from './features/Authorization/components/Protected';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItemByUserIdAsync } from './features/cart/cartSlice';
-import { loggedInUserSelector } from './features/Authorization/authSlice';
+import { checkAuthAsync, checkUserAuthSelector, loggedInUserSelector } from './features/Authorization/authSlice';
 import PageNotFound from './pages/404';
 import OrderPlaced from './pages/OrderPlaced';
 import UserOrderPage from './pages/UserOrderPage';
@@ -23,6 +23,7 @@ import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import AdminHome from './pages/AdminHome';
 import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
+import StripeCheckout from './pages/stripeCheckout';
 
 // import Home from './pages/Home';
 
@@ -46,26 +47,31 @@ const router = createBrowserRouter([
   {path: "/my-profile", element:<Protected><MyProfilePage /></Protected>},
   {path: "/logout", element:<Logout />},
   {path: "/forgot-password", element:<ForgotPasswordPage />},
+  {path: "/stripe-checkout", element:<Protected><StripeCheckout /></Protected>},
 ])
 
 function App() {
   const dispatch = useDispatch()
   const user = useSelector(loggedInUserSelector)
+  const checkUserAuth = useSelector(checkUserAuthSelector)
+
+  useEffect(() => {
+    dispatch(checkAuthAsync())
+  },[dispatch])
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchItemByUserIdAsync(user.id))
-      dispatch(fetchUserInfoAsync(user.id))
-      console.log("app", user.id)
+      dispatch(fetchItemByUserIdAsync())
+      dispatch(fetchUserInfoAsync())
     } else {
       console.log("user not found")
     }
   }, [dispatch, user])
   return (
     <div className="App">
-      <RouterProvider router={router}>
+      {checkUserAuth && <RouterProvider router={router}>
 
-      </RouterProvider>
+      </RouterProvider>}
     </div>
   );
 }

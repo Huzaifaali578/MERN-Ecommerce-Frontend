@@ -13,9 +13,11 @@ import {
 } from "../../product-list/ProductSlice";
 import { useForm } from "react-hook-form";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { checkUserAuthSelector } from "../../Authorization/authSlice";
 
 export default function AdminProductForm() {
   const categories = useSelector(categorySelector);
+  const checkUserAuth = useSelector(checkUserAuthSelector);
   const brands = useSelector(brandSelector);
   const dispatch = useDispatch();
   const {
@@ -31,6 +33,7 @@ export default function AdminProductForm() {
 
   useEffect(() => {
     if (params.id) {
+      console.log(params.id)
       dispatch(fetchProductByIdAsync(params.id));
     } else {
       dispatch(resetProductDetailById());
@@ -63,7 +66,7 @@ export default function AdminProductForm() {
 
   return (
     <>
-      {formSubmited && <Navigate to="/admin"></Navigate>}
+      {formSubmited && checkUserAuth && <Navigate to="/admin"></Navigate>}
       <form
         onSubmit={handleSubmit((data) => {
           console.log(data);
@@ -77,17 +80,27 @@ export default function AdminProductForm() {
           delete product["image1"];
           delete product["image2"];
           delete product["image3"];
-          product.rating = +selectedProduct.rating || 0;
+          product.rating = +selectedProduct?.rating || 0;
           product.price = +product.price;
           product.discountPercentage = +product.discountPercentage;
           product.stock = +product.stock;
-          console.log(product);
-          if (selectedProduct.id === params.id) {
-            product.id = params.id;
-            dispatch(updateProductAsync(product));
-          } else {
-            dispatch(createProductAsync(product));
+          {
+            selectedProduct ? (
+              selectedProduct?.id === params.id && (
+                <>
+                  {console.log("selectedProduct.id", selectedProduct?.id)}
+                  {console.log("params.id", params.id)}
+                  {(() => {
+                    product.id = params.id;
+                    dispatch(updateProductAsync(product));
+                  })()}
+                </>
+              )
+            ) : (
+              dispatch(createProductAsync(product))
+            )
           }
+
           setFormSubmited(true)
         })}
       >
@@ -96,14 +109,22 @@ export default function AdminProductForm() {
             <h2 className="text-base/7 font-bold text-gray-900">
               Add Product
             </h2>
-            {selectedProduct.deleted ? (<div> <p className="text-sm text-red-700"> product daleted </p> </div>)
-             :
-            <button
-              onClick={() => handleDelete()}
-              className="rounded-md mt-5 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-red:outline-indigo-600"
-            >
-              DELETE PRODUCT
-            </button>}
+            {selectedProduct && <div>
+              {
+                selectedProduct.deleted ? (
+                  <div>
+                    <p className="text-sm text-red-700">Product deleted</p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleDelete()}
+                    className="rounded-md mt-5 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    DELETE PRODUCT
+                  </button>
+                )
+              }
+            </div>}
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label

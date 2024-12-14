@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 
 import CheckoutForm from "./CheckoutForm";
-import CompletePage from "./CompletePage";
-import "../Stripe.css";
+// import CompletePage from "./CompletePage";
+// import "../";
 import { useSelector } from "react-redux";
 import { currentOrderSelector } from "../features/Orders/orderSlice";
 
@@ -28,7 +28,7 @@ export default function StripeCheckout() {
     fetch("http://localhost:8080/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: currentOrder.items }),
+      body: JSON.stringify({ totalAmount: currentOrder.totalAmount}),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -45,17 +45,13 @@ export default function StripeCheckout() {
   const loader = 'auto';
 
   return (
-    <Router>
       <div className="Stripe">
         {clientSecret && (
           <Elements options={{clientSecret, appearance, loader}} stripe={stripePromise}>
-            <Routes>
-              <Route path="/checkout" element={<CheckoutForm dpmCheckerLink={dpmCheckerLink}/>} />
-              <Route path="/complete" element={<CompletePage />} />
-            </Routes>
+            <CheckoutForm dpmCheckerLink={dpmCheckerLink}/>
           </Elements>
         )}
       </div>
-    </Router>
+    
   );
 }

@@ -12,6 +12,7 @@ const initialState = {
 export const createOrderAsync = createAsyncThunk(
   'order/createOrder',
   async (order) => {
+    console.log(order)
     const response = await createOrder(order);
     return response.data;
   }
@@ -38,6 +39,9 @@ export const orderSlice = createSlice({
   reducers: {
     resetOrder: (state) => {
       state.currentOrder = null
+    },
+    currentOrderR: (state, action) => {
+      state.currentOrder = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -75,7 +79,7 @@ export const orderSelector = (state) => state.order.orders;
 export const totalOrdersSelector = (state) => state.order.totalOrders; 
 export const AllOrdersSelector = (state) => state.order.AllOrders; 
 export const currentOrderSelector = (state) => state.order.currentOrder; 
-export const {resetOrder} = orderSlice.actions;
+export const {resetOrder, currentOrderR} = orderSlice.actions;
 
 
 const orderReducer = orderSlice.reducer;

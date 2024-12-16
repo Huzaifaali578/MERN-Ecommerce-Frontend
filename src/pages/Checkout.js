@@ -46,8 +46,9 @@ export default function Checkout() {
     dispatch(removeFromCartAsync(itemId));
   }
   function handleAddress(e) {
-    console.log(e.target.value);
-    setAddressSelected(user.addresses[e.target.value]);
+    console.log("User addresses:", user?.addresses[e.target.value]);
+    console.log("Selected index:", e.target.value);
+    setAddressSelected(user?.addresses[e.target.value]);
   }
   function handlePayment(e) {
     console.log(e.target.value);
@@ -367,22 +368,20 @@ export default function Checkout() {
                           <ul role="list">
                             {user?.addresses?.map((address, index) => (
                               <li
-                                key={index}
+                                key={address.id || index}
                                 className="flex justify-between px-5 gap-x-6 py-5 border-solid border-2 border-gray-400 mb-4 mt-3"
                               >
                                 <div className="flex min-w-0 gap-x-4">
                                   <input
-                                    id="address"
+                                    id={`address-${index}`}
                                     name="address"
                                     onClick={(e) => handleAddress(e)}
                                     value={index}
                                     type="radio"
                                     className="size-4 border-gray-300 cursor-pointer text-indigo-600 focus:ring-indigo-600"
                                   />
-                                  <div className="min-w-0 flex-auto">
-                                    <p className="text-sm/6 font-bold text-gray-900">
-                                      {address.name}
-                                    </p>
+                                  <label htmlFor={`address-${index}`} className="cursor-pointer min-w-0 flex-auto">
+                                    <p className="text-sm/6 font-bold text-gray-900">{address.name}</p>
                                     <p className="mt-1 truncate font-bold text-xs/5 text-gray-900">
                                       street: {address.street}
                                     </p>
@@ -392,23 +391,17 @@ export default function Checkout() {
                                     <p className="mt-1 truncate font-bold text-xs/5 text-gray-900">
                                       pin code: {address.pinCode}
                                     </p>
-                                  </div>
+                                  </label>
                                 </div>
                                 <div className="hidden shrink-0 sm:flex sm:flex-col font-bold sm:items-end">
-                                  <p className="text-sm/6 text-gray-900">
-                                    phone: {address.phone}
-                                  </p>
-                                  <p className="text-sm/6 font-bold text-gray-900">
-                                    city: {address.city}
-                                  </p>
-                                  <p className="text-sm/6 font-bold text-gray-900">
-                                    state: {address.State}
-                                  </p>
+                                  <p className="text-sm/6 text-gray-900">phone: {address.phone}</p>
+                                  <p className="text-sm/6 font-bold text-gray-900">city: {address.city}</p>
+                                  <p className="text-sm/6 font-bold text-gray-900">state: {address.State}</p>
                                 </div>
                               </li>
                             ))}
                           </ul>
-                        </div>
+                        </div>;
                         <div className="mt-10 space-y-10">
                           <fieldset>
                             <legend className="text-sm/6 font-semibold text-gray-900">

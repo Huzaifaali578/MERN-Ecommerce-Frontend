@@ -1,12 +1,13 @@
-export function userOrder(userId) {
+export function userOrder() {
   return new Promise(async (resolve) => {
-    const response = await fetch("/orders/user/"+userId)
+    const response = await fetch("/orders/user/")
     const data = await response.json()
     console.log(data)
     resolve({ data })
   }
   );
 }
+
 
 export function updateAddress(update) {
   return new Promise(async (resolve) => {

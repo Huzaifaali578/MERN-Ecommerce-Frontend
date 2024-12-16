@@ -13,12 +13,12 @@ export default function UserOrders() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userOrderAsync(user?.id))
-  }, [dispatch, user])
+    dispatch(userOrderAsync())
+  }, [dispatch])
   
   return (
     <>
-      {myOrderDetails.map((order) => (
+      {myOrderDetails?.map((order) => (
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <div className="flow-root">

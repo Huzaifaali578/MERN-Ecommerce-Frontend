@@ -9,9 +9,8 @@ const initialState = {
 
 export const userOrderAsync = createAsyncThunk(
   'user/userOrder',
-  async (userId) => {
-    console.log("userAsync", userId)
-    const response = await userOrder(userId);
+  async () => {
+    const response = await userOrder();
     return response.data;
   }
 );

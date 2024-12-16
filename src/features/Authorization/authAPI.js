@@ -1,5 +1,3 @@
-import { data } from "react-router-dom";
-
 export function createUser(userData) {
   return new Promise(async (resolve) => {
     const response = await fetch("/auth/signup", {
@@ -51,11 +49,24 @@ export function checkAuth() {
   });
 }
 
-export function signOut(userId) {
-  return new Promise(async (resolve) => {
-    // TODO: on server
-    resolve({ data: {status: "succes"} });
+export function signOut() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(`/auth/  `);
+      if (response.ok) {
+        const data = await response.json();
+        resolve({data})
+      } else {
+        const error = await response.text()
+        reject(error)
+      }
+    } catch (error) {
+      reject(error)
+    }
   });
 }
+
+
+
 
 

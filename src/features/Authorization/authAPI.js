@@ -52,7 +52,7 @@ export function checkAuth() {
 export function signOut() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`/api/auth/  `);
+      const response = await fetch(`/api/auth/signout  `);
       if (response.ok) {
         const data = await response.json();
         resolve({data})

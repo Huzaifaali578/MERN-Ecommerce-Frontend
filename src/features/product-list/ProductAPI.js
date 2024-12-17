@@ -36,8 +36,8 @@ export function fetchProductByFilter({ filter, sort, pagination, admin }) {
       console.log(queryString)
 
       const url = queryString 
-        ? `/products?${queryString}`
-        : "/products";
+        ? `/api/products?${queryString}`
+        : "/api/products";
 
       const response = await fetch(url);
       if (!response.ok) {
@@ -61,7 +61,7 @@ export function fetchProductByFilter({ filter, sort, pagination, admin }) {
 export function fetchCategory() {
   return new Promise(async (resolve, reject) => {
     try {
-      const url = "/category"
+      const url = "/api/category"
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(
@@ -81,7 +81,7 @@ export function fetchCategory() {
 export function fetchBrand() {
   return new Promise(async (resolve, reject) => {
     try {
-      const url = "/brand"
+      const url = "/api/brand"
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(
@@ -102,7 +102,7 @@ export function fetchProductById(id) {
   return new Promise(async (resolve, reject) => {
     try {
       console.log(id)
-      const url = "/products/"+ id
+      const url = "/api/products/"+ id
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(
@@ -122,7 +122,7 @@ export function fetchProductById(id) {
 
 export function createProduct(product) {
   return new Promise(async (resolve, reject) => {
-    const response = await fetch("/products", {
+    const response = await fetch("/api/products", {
       method: "POST",
       body: JSON.stringify(product),
       headers: { "content-type": "application/json" },
@@ -136,7 +136,7 @@ export function createProduct(product) {
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
     console.log(update.id)
-    const response = await fetch("/products/"+update.id, {
+    const response = await fetch("/api/products/"+update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
       headers: { "Content-Type": "application/json" }

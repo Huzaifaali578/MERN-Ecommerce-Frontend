@@ -1,6 +1,6 @@
 export function userOrder() {
   return new Promise(async (resolve) => {
-    const response = await fetch("/orders/user/")
+    const response = await fetch("/api/orders/user/")
     const data = await response.json()
     console.log(data)
     resolve({ data })
@@ -11,7 +11,7 @@ export function userOrder() {
 
 export function updateAddress(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/users/"+update.id, {
+    const response = await fetch("/api/users/"+update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
       headers: { "content-type": "application/json" },
@@ -23,7 +23,7 @@ export function updateAddress(update) {
 }
 export function fetchUserInfo() {
   return new Promise(async (resolve) => {
-    const response = await fetch("/users/own")
+    const response = await fetch("/api/users/own")
     const data = await response.json();
     // TODO: on server it will only return some information of user (not password)
     resolve({ data });

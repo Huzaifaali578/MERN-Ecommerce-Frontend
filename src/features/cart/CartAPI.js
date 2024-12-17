@@ -2,7 +2,7 @@ export function addToCart(userCartData) {
   console.log("userCartData:", userCartData);
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("/cart", {
+      const response = await fetch("/api/cart", {
         method: "POST",
         body: JSON.stringify(userCartData),
         headers: { "Content-Type": "application/json" } // Fixed typo here
@@ -26,7 +26,7 @@ export function addToCart(userCartData) {
 
 export function fetchItemByUserId() {
   return new Promise(async (resolve) => {
-    const response = await fetch("/cart" )
+    const response = await fetch("/api/cart" )
     const data = await response.json()
     resolve({ data })
   }
@@ -37,7 +37,7 @@ export function updateCart(update) {
   console.log(update)
   console.log(update.id)
   return new Promise(async (resolve) => {
-    const response = await fetch("/cart/"+update.id, {
+    const response = await fetch("/api/cart/"+update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
       headers: { "Content-Type": "application/json" }
@@ -51,7 +51,7 @@ export function updateCart(update) {
 
 export function removeFromCart(itemId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/cart/"+itemId, {
+    const response = await fetch("/api/cart/"+itemId, {
       method: "DELETE",
       headers: { "content-type": "application/jsom" }
     });

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from 'react-router-dom';
 
 import CheckoutForm from "./CheckoutForm";
 // import CompletePage from "./CompletePage";
@@ -21,7 +16,7 @@ const stripePromise = loadStripe("pk_test_51QVYRBKITOIJo3zq80GhjmRfz2EZssXDAcm6V
 export default function StripeCheckout() {
   const [clientSecret, setClientSecret] = useState("");
     const [dpmCheckerLink, setDpmCheckerLink] = useState("");
-    const currentOrder = useSelector(currentOrderSelector)
+  const currentOrder = useSelector(currentOrderSelector)
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
@@ -43,7 +38,6 @@ export default function StripeCheckout() {
   };
   // Enable the skeleton loader UI for optimal loading.
   const loader = 'auto';
-
   return (
       <div className="Stripe">
         {clientSecret && (

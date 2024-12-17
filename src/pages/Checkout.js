@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
   createOrderAsync,
-  currentOrderR,
   currentOrderSelector,
 } from "../features/Orders/orderSlice";
 import {
@@ -55,21 +54,20 @@ export default function Checkout() {
     setPaymentMethod(e.target.value);
   }
 
+  const order = {
+    items,
+    user: user?.id,
+    totalAmount,
+    totalItems,
+    paymentMethod,
+    addressSelected,
+    status: "pending", // other status can be delivered and received
+  };
+  
   function handleOrder() {
-    const order = {
-      items,
-      user: user?.id,
-      totalAmount,
-      totalItems,
-      paymentMethod,
-      addressSelected,
-      status: "pending", // other status can be delivered and received
-    };
     if (addressSelected && paymentMethod) {
-      dispatch(createOrderAsync(order));
-      // dispatch(currentOrderR(order));
+      dispatch(createOrderAsync(order))
 
-      // console.log(order);
     } else {
       // TODO: need to redirect from here to new page of order success
       alert("Enter Address and payment method");

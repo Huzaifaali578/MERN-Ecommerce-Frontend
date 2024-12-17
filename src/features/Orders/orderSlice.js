@@ -6,7 +6,7 @@ const initialState = {
   status: 'idle',
   currentOrder: null,
   AllOrders: [],
-  totalOrders: 0
+  totalOrders: 0,
 };
 
 export const createOrderAsync = createAsyncThunk(
@@ -40,9 +40,6 @@ export const orderSlice = createSlice({
     resetOrder: (state) => {
       state.currentOrder = null
     },
-    currentOrderR: (state, action) => {
-      state.currentOrder = action.payload
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -79,7 +76,8 @@ export const orderSelector = (state) => state.order.orders;
 export const totalOrdersSelector = (state) => state.order.totalOrders; 
 export const AllOrdersSelector = (state) => state.order.AllOrders; 
 export const currentOrderSelector = (state) => state.order.currentOrder; 
-export const {resetOrder, currentOrderR} = orderSlice.actions;
+export const cartCurrentOrderSelector = (state) => state.order.cartCurrentOrder; 
+export const {resetOrder, cardPaymentOrder} = orderSlice.actions;
 
 
 const orderReducer = orderSlice.reducer;
